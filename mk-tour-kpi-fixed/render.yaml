@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: mk-tour-kpi
+    runtime: node
+    plan: starter
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mk-tour-db
+          property: connectionString
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+databases:
+  - name: mk-tour-db
+    plan: basic-256mb
+    databaseName: mktour
+    user: mktour
